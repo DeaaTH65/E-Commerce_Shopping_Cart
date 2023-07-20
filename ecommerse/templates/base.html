@@ -57,9 +57,9 @@
           <li><a class="nav-link scrollto" href="#">My Profile</a></li>
           <li class="dropdown"><a href="#"><span>SignIn</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">Login</a></li>
-              <li><a href="#">Logout</a></li>
-              <li><a href="#">Register</a></li>
+              <li><a href="{% url 'handlelogin' %}">Login</a></li>
+              <li><a href="{% url 'handlelogout' %}">Logout</a></li>
+              <li><a href="{% url 'signup' %}">Register</a></li>
             </ul>
           </li>
           <li><a class="nav-link scrollto bg-danger p-2 m-2" href="{% url 'contact' %}">Cart</a></li>
