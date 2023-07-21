@@ -29,5 +29,8 @@ def handlelogin(request):
 
     return render(request,'login.html')
 
+
 def handlelogout(request):
-    return redirect('handlelogin')
+    logout(request)
+    messages.info(request,"Logout Success")
+    return redirect('/auth/login')
