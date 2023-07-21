@@ -86,3 +86,29 @@ def handlelogout(request):
     logout(request)
     messages.info(request,"Logout Success")
     return redirect('/auth/login')
+
+
+class RequestResetEmailView(View):
+    def get(self,request):
+        return render(request,'request-reset-email.html')
+    
+    def post(self,request):
+        email=request.POST['email']
+        user=User.objects.filter(email=email)
+
+        if user.exists():
+            # current_site=get_current_site(request)
+            email_subject='[Reset Your Password]'
+            message=render_to_string('reset-user-password.html',{
+                'domain':'127.0.0.1:8000',
+                'uid':urlsafe_base64_encode(force_bytes(user[0].pk)),
+                'token':PasswordResetTokenGenerator().make_token(user[0])
+            })
+
+            # email_message=EmailMessage(email_subject,message,settings.EMAIL_HOST_USER,[email])
+            # email_message.send()
+
+            messages.info(request,f"WE HAVE SENT YOU AN EMAIL WITH INSTRUCTIONS ON HOW TO RESET THE PASSWORD {message} " )
+            return render(request,'request-reset-email.html')
+        
+        
