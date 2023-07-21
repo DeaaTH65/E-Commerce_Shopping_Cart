@@ -48,6 +48,21 @@ def signup(request):
     return render(request,"signup.html")
 
 
+class ActivateAccountView(View):
+    def get(self,request,uidb64,token):
+        try:
+            uid=force_text(urlsafe_base64_decode(uidb64))
+            user=User.objects.get(pk=uid)
+        except Exception as identifier:
+            user=None
+        if user is not None and generate_token.check_token(user,token):
+            user.is_active=True
+            user.save()
+            messages.info(request,"Account Activated Successfully")
+            return redirect('/auth/login')
+        return render(request,'activatefail.html')
+
+
 def handlelogin(request):
     if request.method=="POST":
 
