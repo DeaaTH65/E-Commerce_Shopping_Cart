@@ -4,6 +4,9 @@ from ecommerceapp.models import Product, Contact, Orders, OrderUpdate
 from math import ceil
 from django.conf import settings
 import json
+from PayTm import Checksum
+from ecommerceapp import keys
+MERCHANT_KEY=keys.MK
 
 
 # Create your views here.
@@ -85,5 +88,24 @@ def checkout(request):
         update = OrderUpdate(order_id=Order.order_id,update_desc="the order has been placed")
         update.save()
         thank = True
+        
+        ## PAYMENT INTEGRATION
+
+        id = Order.order_id
+        oid=str(id)+"ShopyCart"
+        param_dict = {
+
+            'MID':keys.MID,
+            'ORDER_ID': oid,
+            'TXN_AMOUNT': str(amount),
+            'CUST_ID': email,
+            'INDUSTRY_TYPE_ID': 'Retail',
+            'WEBSITE': 'WEBSTAGING',
+            'CHANNEL_ID': 'WEB',
+            'CALLBACK_URL': 'http://127.0.0.1:8000/handlerequest/',
+
+        }
+        param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, MERCHANT_KEY)
+        return render(request, 'paytm.html', {'param_dict': param_dict})
         
     return render(request, 'checkout.html')
