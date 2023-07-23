@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from ecommerceapp.models import Product, Contact
+from ecommerceapp.models import Product, Contact, Orders
 from math import ceil
-
+from django.conf import settings
+import json
 
 
 # Create your views here.
