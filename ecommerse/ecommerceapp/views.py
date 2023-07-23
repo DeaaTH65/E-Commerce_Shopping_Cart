@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from ecommerceapp.models import Product, Contact, Orders
+from ecommerceapp.models import Product, Contact, Orders, OrderUpdate
 from math import ceil
 from django.conf import settings
 import json
